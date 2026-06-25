@@ -1,154 +1,366 @@
-# Brain Tumor MRI Classification with Grad-CAM
+# 🧠 Explainable AI-Based Medical Decision Support System for Brain Tumor Diagnosis Using MRI
 
-A Flask web application for classifying brain MRI images and visualizing model predictions using Grad-CAM explainability.
+<p align="center">
 
-## Features
+![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python)
+![Flask](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)
+![PyTorch](https://img.shields.io/badge/PyTorch-Deep_Learning-red?style=for-the-badge&logo=pytorch)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer_Vision-green?style=for-the-badge&logo=opencv)
+![Grad-CAM](https://img.shields.io/badge/Explainable_AI-GradCAM-purple?style=for-the-badge)
+![IEEE](https://img.shields.io/badge/Research-IEEE_Accepted-success?style=for-the-badge)
 
-### Core Features
-- Brain MRI image classification (Tumor/No Tumor)
-- Grad-CAM visualization to show which regions influenced the prediction
-- Robust image validation for medical images
-- Web-based interface for easy use
+</p>
 
-### Enhanced Features (New!)
-- 📊 **Prediction History** - View all past predictions with details
-- 📈 **Statistics Dashboard** - Track model performance and usage statistics
-- 🖼️ **Image Preview** - Preview images before uploading
-- 📊 **Confidence Visualization** - Visual confidence bars and charts
-- ⏱️ **Processing Time Tracking** - See how long each prediction takes
-- 🗑️ **History Management** - Delete old predictions
-- 🔗 **Navigation** - Easy navigation between pages
+---
 
-## Setup Instructions
+## 📖 Overview
 
-### 1. Install Dependencies
+Brain tumors are among the most critical neurological disorders where **early diagnosis** can significantly improve treatment outcomes.
 
-Make sure you have Python 3.9+ installed. Then install the required packages:
+This project presents an **Explainable AI (XAI) based Medical Decision Support System** that automatically analyzes **Brain MRI images** using Deep Learning and provides:
 
-```bash
-pip install -r requirements.txt
+- Brain Tumor Prediction
+- Explainable AI (Grad-CAM)
+- Confidence Score
+- Medical Recommendations
+- Prediction History
+- Statistics Dashboard
+- Tumor Information Guide
+- Specialist Doctor Directory
+
+Unlike traditional black-box AI models, this system visually explains **why** the model predicted a tumor using **Grad-CAM heatmaps**, improving transparency and trust.
+
+---
+
+# 🎯 Key Features
+
+✅ Brain MRI Upload
+
+✅ Brain Tumor Detection
+
+✅ Explainable AI (Grad-CAM)
+
+✅ Confidence Score
+
+✅ AI Generated Interpretation
+
+✅ Medical Recommendations
+
+✅ Prediction History
+
+✅ Statistics Dashboard
+
+✅ Tumor Information Guide
+
+✅ Specialist Doctor Directory
+
+✅ Beautiful Responsive UI
+
+---
+
+# 📸 Application Preview
+
+## 🏠 Home Page
+
+> Upload Brain MRI Image for AI-powered diagnosis.
+
+(Add Home Screenshot Here
+
+---
+
+## 🧠 Prediction Result
+
+Displays
+
+- Original MRI
+- Grad-CAM Heatmap
+- Prediction
+- Confidence
+- AI Explanation
+- Recommendations
+
+(Add Prediction Screenshot Here)
+
+---
+
+## 📊 Statistics Dashboard
+
+Shows
+
+- Total Predictions
+- Average Confidence
+- Prediction Distribution
+- High Confidence Predictions
+
+(Add Statistics Screenshot Here)
+
+---
+
+## 📜 Prediction History
+
+Stores
+
+- Uploaded MRI
+- Prediction
+- Confidence
+- Processing Time
+- Date
+
+(Add History Screenshot Here)
+
+---
+
+## 👨‍⚕️ Doctor Directory
+
+Provides specialist doctor information for educational purposes.
+
+(Add Doctors Screenshot Here)
+
+---
+
+## 📚 Tumor Information
+
+Educational information regarding
+
+- Glioma
+- Meningioma
+- Pituitary Tumor
+- Symptoms
+- Treatments
+- Prognosis
+
+(Add Tumor Info Screenshot Here)
+
+---
+
+# 🧠 Explainable AI
+
+One of the major highlights of this project is the integration of **Grad-CAM (Gradient-weighted Class Activation Mapping).**
+
+Instead of only predicting:
+
+```
+Tumor
 ```
 
-Or if using the virtual environment in `app/venv`:
+the model also highlights:
 
-```bash
-# Activate virtual environment
-# On Windows:
-app\venv\Scripts\activate
+- Which MRI regions influenced the prediction
+- Important brain regions
+- Visual attention map
+- Confidence interpretation
 
-# On Linux/Mac:
-source app/venv/bin/activate
+This increases trust and transparency in AI-assisted diagnosis.
 
-# Install dependencies
-pip install -r requirements.txt
-```
+---
 
-### 2. Running in VS Code
+# ⚙️ Technology Stack
 
-#### Method 1: Using the Debugger (Recommended)
+## Frontend
 
-1. Open the project folder in VS Code
-2. Press `F5` or go to **Run and Debug** (Ctrl+Shift+D)
-3. Select **"Python: Flask App"** from the dropdown
-4. Click the green play button or press `F5`
-5. The app will start and you'll see the URL in the terminal (usually `http://127.0.0.1:5000/`)
+- HTML5
+- CSS3
+- JavaScript
 
-#### Method 2: Using the Terminal
+## Backend
 
-1. Open the integrated terminal in VS Code (Ctrl+`)
-2. Activate the virtual environment (if using one):
-   ```bash
-   app\venv\Scripts\activate  # Windows
-   # or
-   source app/venv/bin/activate  # Linux/Mac
-   ```
-3. Run the Flask app:
-   ```bash
-   python app/app.py
-   ```
-4. Open your browser and go to `http://localhost:5000/`
-
-#### Method 3: Using Flask Command
-
-1. Set the Flask app environment variable:
-   ```bash
-   $env:FLASK_APP="app/app.py"  # PowerShell
-   # or
-   export FLASK_APP=app/app.py  # Linux/Mac
-   ```
-2. Run Flask:
-   ```bash
-   flask run
-   ```
-
-## Project Structure
-
-```
-python project/
-├── app/
-│   ├── app.py              # Main Flask application
-│   ├── templates/          # HTML templates
-│   │   ├── upload.html
-│   │   ├── result.html
-│   │   ├── error.html
-│   │   ├── history.html    # Prediction history page
-│   │   └── statistics.html # Statistics dashboard
-│   └── venv/               # Virtual environment (optional)
-├── src/
-│   ├── predict.py          # Prediction functions
-│   ├── explain.py          # Grad-CAM explanation functions
-│   └── database.py          # Database operations for history
-├── models/
-│   └── best_model.pth      # Trained model weights
-├── uploads/                 # Uploaded images (created automatically)
-├── results/                 # Grad-CAM results (created automatically)
-├── predictions.db           # SQLite database for history (created automatically)
-├── requirements.txt         # Python dependencies
-└── PROJECT_ENHANCEMENTS.md  # List of enhancement suggestions
-```
-
-## Usage
-
-1. Start the Flask application
-2. Open `http://localhost:5000/` in your browser
-3. Upload a brain MRI image (JPG, PNG, or JPEG)
-4. Preview the image before uploading (new!)
-5. View the classification result and Grad-CAM visualization
-6. Check your prediction history at `/history`
-7. View statistics at `/statistics`
-
-## New Pages
-
-- **`/`** - Main upload page with image preview
-- **`/history`** - View all past predictions
-- **`/statistics`** - Statistics dashboard with charts
-
-## Requirements
-
-- Python 3.9+
+- Python
 - Flask
+
+## AI / Deep Learning
+
 - PyTorch
 - Torchvision
-- Pillow (PIL)
+- Captum (Grad-CAM)
+
+## Database
+
+- SQLite
+
+## Image Processing
+
+- OpenCV
+- Pillow
 - NumPy
+
+## Visualization
+
 - Matplotlib
-- Captum (for Grad-CAM)
 
-## Notes
+---
 
-- The model requires a trained `best_model.pth` file in the `models/` directory
-- Images are validated to ensure they are grayscale medical images
-- Minimum confidence threshold is 60% for predictions
-- The app automatically creates `uploads/`, `results/`, and `predictions.db` (database) directories/files
-- All predictions are automatically saved to the database for history tracking
+# 📂 Project Structure
 
-## Future Enhancements
+```
+Brain-Tumor-AI
+│
+├── app/
+│
+├── models/
+│
+├── scripts/
+│
+├── src/
+│
+├── requirements.txt
+│
+├── README.md
+│
+└── .gitignore
+```
 
-See `PROJECT_ENHANCEMENTS.md` for a comprehensive list of suggested improvements including:
-- Batch processing
-- PDF report generation
-- REST API endpoints
-- Docker support
-- And much more!
+---
 
+# 🚀 Installation
 
+Clone Repository
+
+```bash
+git clone https://github.com/RahulTheDeveloper/explainable-ai-brain-tumor-diagnosis.git
+```
+
+Move into project
+
+```bash
+cd explainable-ai-brain-tumor-diagnosis
+```
+
+Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate
+
+Windows
+
+```bash
+venv\Scripts\activate
+```
+
+Linux
+
+```bash
+source venv/bin/activate
+```
+
+Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run Application
+
+```bash
+python app/app.py
+```
+
+Open
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+# 📈 Workflow
+
+```
+Brain MRI Image
+        │
+        ▼
+ Image Preprocessing
+        │
+        ▼
+ Deep Learning Model
+        │
+        ▼
+ Tumor Prediction
+        │
+        ▼
+ Grad-CAM Generation
+        │
+        ▼
+ Confidence Analysis
+        │
+        ▼
+ Medical Recommendation
+        │
+        ▼
+ History + Statistics
+```
+
+---
+
+# 📄 Research Publication
+
+**Paper Title**
+
+> Brain Tumor Diagnosis Using MRI: An Explainable AI-Based Medical Decision Support System
+
+### Status
+
+✅ Accepted for presentation and further publication in **2nd IEEE ICAC2N-2026**, subject to conference publication requirements. :contentReference[oaicite:1]{index=1}
+
+---
+
+# 👨‍💻 Authors
+
+- Rahul
+- Prashant Rawat
+- Mr. Uppiliraja P
+
+---
+
+# 🌍 Deployment
+
+Current Status
+
+🟡 AWS Deployment In Progress
+
+Soon this repository will include:
+
+- AWS EC2 Deployment
+- Public Live URL
+- HTTPS
+- Production Configuration
+
+---
+
+# 📌 Future Enhancements
+
+- Docker Support
+- REST API
+- User Authentication
+- PDF Medical Reports
+- Multi-class Classification
+- Cloud Storage
+- Email Reports
+- Mobile Responsive Dashboard
+- AWS Production Deployment
+
+---
+
+# ⚠️ Medical Disclaimer
+
+This application is developed for **educational and research purposes only**.
+
+It **must not** be considered a replacement for professional medical diagnosis, treatment, or clinical decision-making. Always consult qualified healthcare professionals for medical advice.
+
+---
+
+# ⭐ Support
+
+If you found this project useful,
+
+⭐ Star this repository.
+
+---
+
+<p align="center">
+
+Made with ❤️ by Rahul
+
+</p>
