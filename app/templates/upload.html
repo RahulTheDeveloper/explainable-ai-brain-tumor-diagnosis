@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Upload MRI Image - Brain Tumor Classification{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1 class="hero-title">🧠 Brain Tumor Detection</h1>
+        <p class="hero-subtitle">Upload your brain MRI scan for instant AI-powered analysis</p>
+        <p style="color: var(--gray-500); font-size: 0.95rem;">
+            Get detailed insights, tumor type information, and specialist recommendations
+        </p>
+    </div>
+
+    <!-- Upload Form Card -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">📤</span>
+            <h3 class="card-title">Upload MRI Image</h3>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-area" id="uploadArea">
+                <input type="file" name="image" id="image" accept="image/*" required style="display: none;">
+                <span class="upload-icon">📁</span>
+                <div class="upload-text">Click to select or drag & drop</div>
+                <div class="upload-hint">Supports: JPG, PNG, JPEG (Brain MRI scans only)</div>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+                <div class="card" style="margin-top: var(--spacing-md); background: var(--gray-50);">
+                    <strong style="display: block; margin-bottom: var(--spacing-sm); color: var(--gray-700);">Preview:</strong>
+                    <img id="previewImage" class="preview-image" alt="Preview">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top: var(--spacing-lg);">
+                <span>🔍</span>
+                <span>Analyze Image</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Information Cards -->
+    <div class="grid grid-3" style="margin-top: var(--spacing-xl);">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">⚡</span>
+                <h3 class="card-title">Fast Analysis</h3>
+            </div>
+            <p>Get results in 2-5 seconds with our advanced AI model</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">🔬</span>
+                <h3 class="card-title">Explainable AI</h3>
+            </div>
+            <p>See exactly which areas the AI focuses on with Grad-CAM visualization</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">👨‍⚕️</span>
+                <h3 class="card-title">Expert Guidance</h3>
+            </div>
+            <p>Get recommendations for specialist doctors based on your results</p>
+        </div>
+    </div>
+
+    <!-- Important Information -->
+    <div class="info-box" style="margin-top: var(--spacing-xl);">
+        <h4 style="margin-bottom: var(--spacing-sm); color: var(--gray-900);">📋 Important Information</h4>
+        <ul class="list">
+            <li class="list-item">Only brain MRI scan images are accepted</li>
+            <li class="list-item">Images must be grayscale medical images</li>
+            <li class="list-item">Minimum recommended size: 50x50 pixels</li>
+            <li class="list-item">This tool is for educational purposes only</li>
+            <li class="list-item">Always consult medical professionals for diagnosis</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('image');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const uploadForm = document.getElementById('uploadForm');
+
+    // Click to upload
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--secondary)';
+        uploadArea.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15))';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = 'var(--primary)';
+        uploadArea.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05))';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFileSelect(files[0]);
+        }
+        uploadArea.style.borderColor = 'var(--primary)';
+        uploadArea.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05))';
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+
+    function handleFileSelect(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            previewContainer.classList.add('active');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Form submission loading
+    uploadForm.addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<span class="loading"></span> Processing...';
+        submitBtn.disabled = true;
+    });
+</script>
+{% endblock %}

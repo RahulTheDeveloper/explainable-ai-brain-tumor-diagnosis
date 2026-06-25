@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Information - Educational Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .tumor-type-card {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .tumor-type-card h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .tumor-type-card p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .info-section {
+            margin-top: 20px;
+        }
+
+        .info-section h4 {
+            color: #333;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        .info-section ul {
+            margin-left: 25px;
+            color: #666;
+            line-height: 2;
+        }
+
+        .info-section li {
+            margin: 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .warning-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .warning-box p {
+            color: #856404;
+            line-height: 1.8;
+        }
+
+        .general-info {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .general-info h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+        }
+
+        .general-info ul {
+            margin-left: 25px;
+            color: #555;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Brain Tumor Information Guide</h1>
+            <p style="color: #666; margin-top: 10px;">Educational information about brain tumors and their types</p>
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/history">📊 History</a>
+                <a href="/statistics">📈 Statistics</a>
+                <a href="/doctors">👨‍⚕️ Find Doctors</a>
+            </div>
+        </div>
+
+        <!-- General Information -->
+        <div class="section">
+            <h2>General Information About Brain Tumors</h2>
+            
+            <div class="general-info">
+                <h3>Overview</h3>
+                <p style="color: #555; line-height: 1.8; margin-bottom: 15px;">
+                    {{ general_info.overview }}
+                </p>
+
+                <h4 style="color: #1976D2; margin-top: 15px;">Common Types:</h4>
+                <ul>
+                    {% for type in general_info.common_types %}
+                    <li>{{ type }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h4 style="color: #1976D2; margin-top: 15px;">Diagnostic Methods:</h4>
+                <ul>
+                    {% for method in general_info.diagnostic_methods %}
+                    <li>{{ method }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h4 style="color: #1976D2; margin-top: 15px;">Warning Signs:</h4>
+                <ul>
+                    {% for sign in general_info.warning_signs %}
+                    <li>{{ sign }}</li>
+                    {% endfor %}
+                </ul>
+
+                <p style="color: #555; margin-top: 15px; font-weight: bold;">
+                    {{ general_info.importance_of_early_detection }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Tumor Types -->
+        <div class="section">
+            <h2>Types of Brain Tumors</h2>
+            
+            {% for tumor_name, tumor_data in tumor_types.items() %}
+            <div class="tumor-type-card">
+                <h3>{{ tumor_data.name }}</h3>
+                <p><strong>Description:</strong> {{ tumor_data.description }}</p>
+
+                <div class="info-section">
+                    <h4>Types/Variants:</h4>
+                    <ul>
+                        {% for type in tumor_data.types %}
+                        <li>{{ type }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h4>Common Symptoms:</h4>
+                    <ul>
+                        {% for symptom in tumor_data.symptoms %}
+                        <li>{{ symptom }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h4>Severity:</h4>
+                    <p style="color: #555;">{{ tumor_data.severity }}</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>Treatment Approaches:</h4>
+                    <ul>
+                        {% for treatment in tumor_data.treatment_approaches %}
+                        <li>{{ treatment }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h4>Prognosis:</h4>
+                    <p style="color: #555;">{{ tumor_data.prognosis }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Warning Box -->
+        <div class="warning-box">
+            <h3>⚠️ Important Medical Disclaimer</h3>
+            <p>
+                This information is for educational purposes only and is not a substitute for professional medical advice, 
+                diagnosis, or treatment. Always seek the advice of qualified healthcare providers with any questions you may 
+                have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because 
+                of something you have read here.
+            </p>
+            <p style="margin-top: 15px;">
+                If you suspect you or someone you know may have a brain tumor, please consult with a qualified medical 
+                professional immediately. Early detection and treatment are crucial for the best possible outcomes.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

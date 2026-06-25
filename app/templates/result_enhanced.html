@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - Brain Tumor Classification{% endblock %}
+
+{% block extra_head %}
+<style>
+    .prediction-badge {
+        display: inline-block;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        font-size: 2rem;
+        font-weight: 800;
+        margin: var(--spacing-md) 0;
+        box-shadow: var(--shadow-xl);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .prediction-tumor {
+        background: var(--gradient-danger);
+        color: var(--white);
+    }
+
+    .prediction-no-tumor {
+        background: var(--gradient-success);
+        color: var(--white);
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+        margin: var(--spacing-lg) 0;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-md);
+        text-align: center;
+        border: 2px solid var(--primary);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin: var(--spacing-sm) 0;
+    }
+
+    .stat-label {
+        color: var(--gray-600);
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Results Header -->
+    <div class="hero" style="margin-bottom: var(--spacing-xl);">
+        <h1 class="hero-title">🔬 Analysis Results</h1>
+        <p class="hero-subtitle">Comprehensive AI-Powered Brain Tumor Analysis</p>
+    </div>
+
+    <!-- Main Results Grid -->
+    <div class="grid grid-3" style="margin-bottom: var(--spacing-xl);">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📷</span>
+                <h3 class="card-title">Original MRI</h3>
+            </div>
+            <img src="{{ original_url }}" alt="Original MRI Scan" style="width: 100%; border-radius: var(--radius); margin-top: var(--spacing-md);">
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">🔍</span>
+                <h3 class="card-title">Grad-CAM Heatmap</h3>
+            </div>
+            <img src="{{ overlay_url }}" alt="Grad-CAM Visualization" style="width: 100%; border-radius: var(--radius); margin-top: var(--spacing-md);">
+            <p style="margin-top: var(--spacing-md); color: var(--gray-600); font-size: 0.9rem;">
+                Red/yellow regions indicate areas the AI focused on for diagnosis
+            </p>
+        </div>
+
+        <div class="card" style="background: var(--gradient-primary); color: var(--white);">
+            <div class="card-header" style="border-bottom-color: rgba(255,255,255,0.3);">
+                <span class="card-icon">🎯</span>
+                <h3 class="card-title" style="color: var(--white);">Prediction</h3>
+            </div>
+            <div class="prediction-badge {% if prediction == 'Tumor' %}prediction-tumor{% else %}prediction-no-tumor{% endif %}">
+                {{ prediction }}
+            </div>
+            <div class="confidence-container">
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width: {{ confidence }}%">
+                        {{ confidence }}%
+                    </div>
+                </div>
+            </div>
+            {% if processing_time %}
+            <div style="text-align: center; margin-top: var(--spacing-md); opacity: 0.9;">
+                ⏱️ Processing: <strong>{{ processing_time }}s</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Enhanced Explainability -->
+    {% if detailed_explanation %}
+    <div class="section">
+        <h2 class="section-title">
+            <span>🧠</span>
+            <span>Enhanced AI Explanation</span>
+        </h2>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Confidence Level</div>
+                <div class="stat-value">{{ detailed_explanation.explanation_level }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Model Certainty</div>
+                <div class="stat-value">{{ detailed_explanation.model_certainty.level }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tumor Probability</div>
+                <div class="stat-value">{{ "%.1f"|format(detailed_explanation.confidence_breakdown.tumor_probability * 100) }}%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">No Tumor Probability</div>
+                <div class="stat-value">{{ "%.1f"|format(detailed_explanation.confidence_breakdown.no_tumor_probability * 100) }}%</div>
+            </div>
+        </div>
+
+        <div class="info-box" style="margin-top: var(--spacing-lg);">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900);">📝 Detailed Interpretation</h4>
+            <p style="font-size: 1.05rem; line-height: 1.8;">{{ detailed_explanation.interpretation }}</p>
+        </div>
+
+        <div style="margin-top: var(--spacing-xl);">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900); display: flex; align-items: center; gap: var(--spacing-sm);">
+                <span>🔑</span>
+                <span>Key Factors Influencing Prediction</span>
+            </h4>
+            <ul class="list">
+                {% for factor in detailed_explanation.key_factors %}
+                <li class="list-item">{{ factor }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div style="margin-top: var(--spacing-xl);">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900); display: flex; align-items: center; gap: var(--spacing-sm);">
+                <span>💡</span>
+                <span>Recommendations</span>
+            </h4>
+            <div class="warning-box">
+                <ul class="list">
+                    {% for rec in detailed_explanation.recommendations %}
+                    <li class="list-item">{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Tumor Information -->
+    {% if has_tumor and tumor_info %}
+    <div class="section">
+        <h2 class="section-title">
+            <span>📋</span>
+            <span>Tumor Type Information</span>
+        </h2>
+        
+        {% if tumor_type_suggestions %}
+        <div style="margin-bottom: var(--spacing-lg);">
+            <p style="margin-bottom: var(--spacing-md); font-weight: 600; color: var(--gray-700);">Possible Tumor Types:</p>
+            {% for type in tumor_type_suggestions %}
+                <span class="badge badge-primary" style="font-size: 1rem; padding: 0.5rem 1rem; margin: 0.25rem;">{{ type }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="warning-box">
+            <h3 style="color: #856404; margin-bottom: var(--spacing-md); font-size: 1.5rem;">{{ tumor_info.name }}</h3>
+            <p style="margin-bottom: var(--spacing-md); color: #856404; line-height: 1.8;">
+                <strong>Description:</strong> {{ tumor_info.description }}
+            </p>
+            
+            <div style="margin-top: var(--spacing-lg);">
+                <h4 style="color: #856404; margin-bottom: var(--spacing-sm);">Types/Variants:</h4>
+                <ul class="list">
+                    {% for type in tumor_info.types %}
+                    <li class="list-item">{{ type }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div style="margin-top: var(--spacing-lg);">
+                <h4 style="color: #856404; margin-bottom: var(--spacing-sm);">Common Symptoms:</h4>
+                <ul class="list">
+                    {% for symptom in tumor_info.symptoms %}
+                    <li class="list-item">{{ symptom }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div style="margin-top: var(--spacing-lg);">
+                <h4 style="color: #856404; margin-bottom: var(--spacing-sm);">Severity:</h4>
+                <p style="color: #856404;">{{ tumor_info.severity }}</p>
+            </div>
+
+            <div style="margin-top: var(--spacing-lg);">
+                <h4 style="color: #856404; margin-bottom: var(--spacing-sm);">Treatment Approaches:</h4>
+                <ul class="list">
+                    {% for treatment in tumor_info.treatment_approaches %}
+                    <li class="list-item">{{ treatment }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div style="margin-top: var(--spacing-lg);">
+                <h4 style="color: #856404; margin-bottom: var(--spacing-sm);">Prognosis:</h4>
+                <p style="color: #856404; line-height: 1.8;">{{ tumor_info.prognosis }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recommended Doctors -->
+    {% if has_tumor and recommended_doctors %}
+    <div class="section">
+        <h2 class="section-title">
+            <span>👨‍⚕️</span>
+            <span>Recommended Specialist Doctors</span>
+        </h2>
+        <p style="margin-bottom: var(--spacing-lg); color: var(--gray-600);">
+            Based on your results, here are specialist doctors who can help with diagnosis and treatment.
+        </p>
+        
+        <div class="grid grid-2">
+            {% for doctor in recommended_doctors %}
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">👨‍⚕️</span>
+                    <h3 class="card-title">{{ doctor.name }}</h3>
+                </div>
+                <p style="color: var(--gray-600); font-style: italic; margin-bottom: var(--spacing-md);">{{ doctor.specialization }}</p>
+                
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>🎓 Qualifications:</strong> {{ doctor.qualifications }}
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>🏥 Hospital:</strong> {{ doctor.hospital }}
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>📍 Location:</strong> {{ doctor.location }}
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>📞 Contact:</strong> {{ doctor.contact }}
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>✉️ Email:</strong> <a href="mailto:{{ doctor.email }}" style="color: var(--primary);">{{ doctor.email }}</a>
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>💼 Experience:</strong> {{ doctor.experience_years }} years
+                </div>
+                <div style="margin: var(--spacing-md) 0;">
+                    <strong>🎯 Expertise:</strong>
+                    <div style="margin-top: var(--spacing-xs);">
+                        {% for exp in doctor.expertise %}
+                            <span class="badge badge-primary" style="font-size: 0.85rem; margin: 0.25rem;">{{ exp }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>💰 Fee:</strong> {{ doctor.consultation_fee }}
+                </div>
+                <div style="margin: var(--spacing-sm) 0;">
+                    <strong>🕐 Available:</strong> {{ doctor.availability }}
+                </div>
+                <div class="badge badge-success" style="margin-top: var(--spacing-md);">⭐ {{ doctor.rating }}/5.0</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: var(--spacing-xl);">
+            <a href="/doctors" class="btn btn-primary btn-lg">
+                View All Specialist Doctors →
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Model Decision Process -->
+    {% if model_decision %}
+    <div class="section">
+        <h2 class="section-title">
+            <span>🤖</span>
+            <span>AI Model Decision Process</span>
+        </h2>
+        
+        <div class="info-box">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900);">How the AI Analyzes</h4>
+            <p style="font-size: 1.05rem; line-height: 1.8;">{{ model_decision.decision_process }}</p>
+        </div>
+
+        <div style="margin-top: var(--spacing-xl);">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900);">Key Features Analyzed:</h4>
+            <ul class="list">
+                {% for feature in model_decision.key_features %}
+                <li class="list-item">{{ feature }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div style="margin-top: var(--spacing-xl);">
+            <h4 style="margin-bottom: var(--spacing-md); color: var(--gray-900);">⚠️ Important Limitations:</h4>
+            <div class="warning-box">
+                <ul class="list">
+                    {% for limitation in model_decision.model_limitations %}
+                    <li class="list-item">{{ limitation }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Disclaimer -->
+    <div class="warning-box" style="margin-top: var(--spacing-xl);">
+        <h3 style="color: #856404; margin-bottom: var(--spacing-md);">⚠️ Important Medical Disclaimer</h3>
+        <p style="color: #856404; line-height: 1.9; font-size: 1.05rem;">
+            This AI-powered tool is for <strong>educational and informational purposes only</strong>. It is <strong>NOT a substitute</strong> for professional medical diagnosis, 
+            treatment, or advice. Always consult with qualified healthcare professionals for medical decisions.
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Image - Brain Tumor MRI Classification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .error-message {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f2ff;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            color: #666;
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">⚠️</div>
+        <h1>Invalid Image</h1>
+        <p class="error-message">
+            {{ error_message }}
+        </p>
+        <a href="/" class="back-btn">← Upload Another Image</a>
+        
+        <div class="info-box">
+            <h3>Please upload a valid brain MRI scan image:</h3>
+            <ul>
+                <li>Only brain MRI scan images are accepted</li>
+                <li>Image must be grayscale (brain MRIs are not color images)</li>
+                <li>Image should have good contrast and clarity</li>
+                <li>Supported formats: JPG, PNG, JPEG</li>
+                <li>Image should be clear and properly oriented</li>
+                <li>Minimum recommended size: 50x50 pixels</li>
+                <li>Regular photographs, X-rays of other body parts, or non-brain images are not accepted</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

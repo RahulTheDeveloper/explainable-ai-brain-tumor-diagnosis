@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Brain Tumor MRI Classification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #764ba2;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .prediction-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .prediction-card h3 {
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .prediction-result {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .confidence {
+            font-size: 1.2em;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .confidence-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .tumor {
+            color: #ff6b6b;
+        }
+
+        .no-tumor {
+            color: #51cf66;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .info-item {
+            margin: 10px 0;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Analysis Results</h1>
+            <div class="nav-links">
+                <a href="/">← Upload Another</a>
+                <a href="/history">📊 History</a>
+                <a href="/statistics">📈 Statistics</a>
+            </div>
+        </div>
+
+        <div class="results-grid">
+            <div class="card">
+                <h3>Original MRI Image</h3>
+                <img src="{{ original_url }}" alt="Original MRI Scan">
+            </div>
+
+            <div class="card">
+                <h3>Grad-CAM Heatmap</h3>
+                <img src="{{ overlay_url }}" alt="Grad-CAM Visualization">
+                <p style="color: #666; font-size: 0.9em; margin-top: 10px;">
+                    Red/yellow regions indicate areas the model focused on for the diagnosis.
+                </p>
+            </div>
+
+            <div class="card prediction-card">
+                <h3>Prediction Result</h3>
+                <div class="prediction-result {% if prediction == 'Tumor' %}tumor{% else %}no-tumor{% endif %}">
+                    {{ prediction }}
+                </div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width: {{ confidence }}%">
+                        {{ confidence }}%
+                    </div>
+                </div>
+                {% if processing_time %}
+                <div class="info-item">
+                    ⏱️ Processing Time: {{ processing_time }}s
+                </div>
+                {% endif %}
+                <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.9; text-align: center;">
+                    {% if prediction == 'Tumor' %}
+                        ⚠️ Tumor detected. Please consult with a medical professional.
+                    {% else %}
+                        ✓ No tumor detected. Continue regular check-ups as recommended.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

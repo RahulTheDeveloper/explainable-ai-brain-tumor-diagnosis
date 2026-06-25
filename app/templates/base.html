@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Brain Tumor MRI Classification - AI-Powered Detection{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <span>🧠</span>
+                <span>Brain Tumor AI</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">🏠 Home</a></li>
+                    <li><a href="/history" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">📊 History</a></li>
+                    <li><a href="/statistics" class="nav-link {% if request.endpoint == 'statistics' %}active{% endif %}">📈 Statistics</a></li>
+                    <li><a href="/doctors" class="nav-link {% if request.endpoint == 'doctors' %}active{% endif %}">👨‍⚕️ Doctors</a></li>
+                    <li><a href="/tumor-info" class="nav-link {% if request.endpoint == 'tumor_info_page' %}active{% endif %}">📚 Info</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🧠 Brain Tumor AI</h4>
+                <p>Advanced AI-powered brain tumor detection with explainable AI technology. Get instant analysis and detailed insights.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/history">Prediction History</a></li>
+                    <li><a href="/statistics">Statistics</a></li>
+                    <li><a href="/doctors">Find Doctors</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="/tumor-info">Tumor Information</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Help & Support</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Important</h4>
+                <p style="font-size: 0.875rem; color: var(--gray-600);">
+                    ⚠️ This tool is for educational purposes only. Always consult qualified healthcare professionals for medical diagnosis.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Brain Tumor MRI Classification System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

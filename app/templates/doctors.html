@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialist Doctors Directory - Brain Tumor Treatment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .doctor-header {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .doctor-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .doctor-specialization {
+            color: #666;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+
+        .doctor-info {
+            margin: 12px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .doctor-info strong {
+            color: #333;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .expertise-tags {
+            margin-top: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+            background: #667eea;
+            color: white;
+        }
+
+        .rating {
+            display: inline-block;
+            background: #51cf66;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .contact-info {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .contact-info a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .intro-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .intro-section p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👨‍⚕️ Specialist Doctors Directory</h1>
+            <p style="color: #666; margin-top: 10px;">Find qualified specialists for brain tumor diagnosis and treatment</p>
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/history">📊 History</a>
+                <a href="/statistics">📈 Statistics</a>
+                <a href="/tumor-info">📚 Tumor Information</a>
+            </div>
+        </div>
+
+        <div class="intro-section">
+            <h2>About This Directory</h2>
+            <p>
+                This directory contains information about specialist doctors who treat brain tumors. These professionals include 
+                neuro-oncologists, neurosurgeons, and radiation oncologists with expertise in various types of brain tumors.
+            </p>
+            <p>
+                <strong>Important:</strong> This is a reference directory. Always verify credentials and consult with your 
+                primary healthcare provider before making appointments. Contact information should be verified directly with 
+                the hospitals or clinics.
+            </p>
+        </div>
+
+        <div class="doctors-grid">
+            {% for doctor in doctors %}
+            <div class="doctor-card">
+                <div class="doctor-header">
+                    <div class="doctor-name">{{ doctor.name }}</div>
+                    <div class="doctor-specialization">{{ doctor.specialization }}</div>
+                </div>
+
+                <div class="doctor-info">
+                    <strong>Qualifications:</strong> {{ doctor.qualifications }}
+                </div>
+
+                <div class="doctor-info">
+                    <strong>Hospital:</strong> {{ doctor.hospital }}
+                </div>
+
+                <div class="doctor-info">
+                    <strong>Location:</strong> {{ doctor.location }}
+                </div>
+
+                <div class="doctor-info">
+                    <strong>Experience:</strong> {{ doctor.experience_years }} years
+                </div>
+
+                <div class="doctor-info">
+                    <strong>Languages:</strong> {{ doctor.languages|join(", ") }}
+                </div>
+
+                <div class="expertise-tags">
+                    <strong style="color: #333; display: block; margin-bottom: 8px;">Expertise:</strong>
+                    {% for exp in doctor.expertise %}
+                        <span class="badge">{{ exp }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="contact-info">
+                    <div class="doctor-info">
+                        <strong>📞 Phone:</strong> {{ doctor.contact }}
+                    </div>
+                    <div class="doctor-info">
+                        <strong>✉️ Email:</strong> <a href="mailto:{{ doctor.email }}">{{ doctor.email }}</a>
+                    </div>
+                    <div class="doctor-info">
+                        <strong>💰 Consultation Fee:</strong> {{ doctor.consultation_fee }}
+                    </div>
+                    <div class="doctor-info">
+                        <strong>🕐 Availability:</strong> {{ doctor.availability }}
+                    </div>
+                </div>
+
+                <div class="rating">⭐ {{ doctor.rating }}/5.0 Rating</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="intro-section" style="margin-top: 25px; background: #fff3cd; border: 2px solid #ffc107;">
+            <h2 style="color: #856404;">⚠️ Important Notes</h2>
+            <p style="color: #856404;">
+                • Always verify doctor credentials and hospital affiliations before scheduling appointments<br>
+                • Contact information may change - verify directly with hospitals<br>
+                • Consultation fees are approximate and may vary<br>
+                • This directory is for informational purposes only<br>
+                • Consult with your primary care physician before seeking specialist care
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
